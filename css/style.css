@@ -1,0 +1,289 @@
+/* ============================================================
+   Si MAMA — Design tokens
+   Identitas visual: kontur pegunungan Papua Pegunungan.
+   Palet: slate gunung senja, ochre tanah dataran tinggi, sage lembah.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --navy-900: #16283A;
+  --navy-800: #1E3448;
+  --navy-700: #243B53;
+  --navy-600: #33546F;
+  --ochre-600: #C98A3E;
+  --ochre-500: #DA9F52;
+  --ochre-100: #F6E9D6;
+  --sage-600: #4B6858;
+  --sage-500: #5F7161;
+  --sage-100: #E4EBE4;
+  --red-500: #C1553F;
+  --red-100: #F6E2DD;
+  --stone-50: #F7F5F0;
+  --stone-100: #EFEBE2;
+  --stone-200: #DFD9CB;
+  --ink: #26241F;
+  --ink-soft: #5C5A52;
+  --white: #FFFFFF;
+
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  --radius: 10px;
+  --shadow: 0 1px 2px rgba(22,40,58,0.06), 0 4px 14px rgba(22,40,58,0.05);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--stone-50);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  color: var(--navy-900);
+  margin: 0;
+}
+
+a { color: var(--navy-700); }
+
+/* ---------- Contour motif (signature element) ----------
+   A faint topographic-line pattern, used on headers/sidebars
+   to evoke Papua Pegunungan's highland terrain. */
+.contour-bg {
+  background-color: var(--navy-900);
+  background-image:
+    repeating-radial-gradient(circle at 15% 20%, transparent 0, transparent 18px, rgba(255,255,255,0.035) 19px, rgba(255,255,255,0.035) 20px, transparent 21px),
+    repeating-radial-gradient(circle at 85% 75%, transparent 0, transparent 26px, rgba(255,255,255,0.03) 27px, rgba(255,255,255,0.03) 28px, transparent 29px);
+}
+
+/* ---------- Layout shell ---------- */
+.app-shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  color: var(--stone-100);
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar .brand {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.sidebar .brand-mark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--white);
+}
+.sidebar .brand-sub {
+  font-size: 11px;
+  color: var(--ochre-500);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.nav-link:hover { background: rgba(255,255,255,0.06); color: var(--white); }
+.nav-link.active { background: rgba(218,159,82,0.16); color: var(--ochre-500); }
+
+.nav-section-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.35);
+  margin: 18px 12px 6px;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+}
+
+.main {
+  padding: 28px 36px 60px;
+  max-width: 1180px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+.topbar h1 { font-size: 24px; font-weight: 600; }
+.topbar .subtitle { color: var(--ink-soft); font-size: 14px; margin-top: 4px; }
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--white);
+  border: 1px solid var(--stone-200);
+  border-radius: 12px;
+  padding: 20px 22px;
+  box-shadow: var(--shadow);
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--stone-200);
+  border-left: 3px solid var(--ochre-600);
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+.stat-card .label {
+  font-size: 12px;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 6px;
+}
+.stat-card .value {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--navy-900);
+}
+.stat-card.sage { border-left-color: var(--sage-600); }
+.stat-card.red { border-left-color: var(--red-500); }
+.stat-card.navy { border-left-color: var(--navy-700); }
+
+/* ---------- Buttons ---------- */
+.btn {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+.btn-primary { background: var(--navy-800); color: var(--white); }
+.btn-primary:hover { background: var(--navy-700); }
+.btn-outline { background: transparent; border-color: var(--stone-200); color: var(--navy-800); }
+.btn-outline:hover { background: var(--stone-100); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ---------- Forms ---------- */
+label { font-size: 13px; font-weight: 600; color: var(--navy-800); display: block; margin-bottom: 6px; }
+input, select, textarea {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--stone-200);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--ink);
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--navy-600);
+  box-shadow: 0 0 0 3px rgba(51,84,111,0.12);
+}
+.field { margin-bottom: 16px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* ---------- Tables ---------- */
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+thead th {
+  text-align: left;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--ink-soft);
+  padding: 10px 12px;
+  border-bottom: 2px solid var(--stone-200);
+}
+tbody td { padding: 12px; border-bottom: 1px solid var(--stone-100); vertical-align: top; }
+tbody tr:hover { background: var(--stone-50); }
+
+/* ---------- Status badges ---------- */
+.badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+.badge-green { background: var(--sage-100); color: var(--sage-600); }
+.badge-blue  { background: #DDE7F2; color: var(--navy-700); }
+.badge-amber { background: var(--ochre-100); color: var(--ochre-600); }
+.badge-red   { background: var(--red-100); color: var(--red-500); }
+.badge-gray  { background: var(--stone-100); color: var(--ink-soft); }
+
+/* ---------- Login page ---------- */
+.login-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+}
+.login-visual {
+  color: var(--white);
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.login-visual .tagline {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  max-width: 420px;
+  line-height: 1.25;
+}
+.login-visual .desc { color: rgba(255,255,255,0.65); font-size: 15px; margin-top: 14px; max-width: 380px; line-height: 1.6; }
+.login-form-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+.login-form-box { width: 100%; max-width: 360px; }
+.login-form-box h2 { font-size: 22px; margin-bottom: 6px; }
+.login-form-box .hint { color: var(--ink-soft); font-size: 14px; margin-bottom: 28px; }
+.error-text { color: var(--red-500); font-size: 13px; margin-top: 10px; min-height: 18px; }
+
+@media (max-width: 860px) {
+  .login-shell { grid-template-columns: 1fr; }
+  .login-visual { display: none; }
+  .app-shell { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .main { padding: 20px; }
+}

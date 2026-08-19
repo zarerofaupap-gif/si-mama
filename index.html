@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Si MAMA — Masuk</title>
+<link rel="stylesheet" href="css/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div class="login-shell">
+  <div class="login-visual contour-bg">
+    <div>
+      <div style="font-family:var(--font-display);font-weight:700;font-size:20px;">Si MAMA</div>
+      <div style="font-size:12px;color:var(--ochre-500);letter-spacing:0.04em;text-transform:uppercase;margin-top:2px;">
+        Papua Pegunungan Regional Intelligence Desk
+      </div>
+    </div>
+    <div>
+      <div class="tagline">Aspirasi masyarakat, tertata dari kampung sampai ke Senator.</div>
+      <div class="desc">
+        Sistem Informasi Manajemen Aspirasi Masyarakat mengelola data aspirasi,
+        profil 8 kabupaten, isu strategis, dan tindak lanjut Papua Pegunungan
+        secara terstruktur sepanjang tahun.
+      </div>
+    </div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.4);">
+      Kantor Sekretariat Jenderal DPD RI Provinsi Papua Pegunungan
+    </div>
+  </div>
+
+  <div class="login-form-panel">
+    <div class="login-form-box">
+      <h2>Masuk ke Si MAMA</h2>
+      <p class="hint">Gunakan akun yang telah didaftarkan oleh Admin.</p>
+
+      <form id="login-form">
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="nama@dpd.go.id" required />
+        </div>
+        <div class="field">
+          <label for="password">Kata sandi</label>
+          <input type="password" id="password" placeholder="Kata sandi" required />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;" id="submit-btn">
+          Masuk
+        </button>
+        <div class="error-text" id="error-text"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="js/supabase-client.js"></script>
+<script>
+  // Kalau sudah login, langsung lempar ke dashboard
+  supabaseClient.auth.getSession().then(({ data: { session } }) => {
+    if (session) window.location.href = "dashboard.html";
+  });
+
+  const form = document.getElementById("login-form");
+  const errorText = document.getElementById("error-text");
+  const submitBtn = document.getElementById("submit-btn");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorText.textContent = "";
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    if (!email || !password) {
+      errorText.textContent = "Email dan kata sandi wajib diisi.";
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Memproses...";
+
+    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Masuk";
+
+    if (error) {
+      errorText.textContent = "Email atau kata sandi salah.";
+      return;
+    }
+
+    window.location.href = "dashboard.html";
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Si MAMA — Dashboard</title>
+<link rel="stylesheet" href="css/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div class="app-shell">
+  <aside class="sidebar contour-bg">
+    <div class="brand">
+      <span class="brand-mark">Si MAMA</span>
+    </div>
+    <div class="brand-sub">Papua Pegunungan</div>
+
+    <a class="nav-link active" href="dashboard.html">Dashboard</a>
+    <a class="nav-link" href="aspirasi.html">Aspirasi</a>
+    <a class="nav-link" href="isu.html">Isu Strategis</a>
+    <a class="nav-link" href="kabupaten.html">Data Kabupaten</a>
+    <a class="nav-link" href="policy-brief.html">Policy Brief</a>
+    <a class="nav-link" href="stakeholder.html">Stakeholder</a>
+    <a class="nav-link" href="arsip.html">Arsip Dokumen</a>
+
+    <div class="nav-section-label">Akun</div>
+    <div id="user-badge" style="padding:10px 12px;"></div>
+    <a class="nav-link" href="#" onclick="signOut(); return false;">Keluar</a>
+
+    <div class="sidebar-footer">Regional Intelligence Desk</div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1>Dashboard</h1>
+        <div class="subtitle" id="topbar-date"></div>
+      </div>
+      <a href="aspirasi.html?new=1" class="btn btn-primary" data-role="admin,aspirasi_officer,data_officer">
+        + Tambah Aspirasi
+      </a>
+    </div>
+
+    <div class="stat-grid" id="stat-grid">
+      <div class="stat-card">
+        <div class="label">Total Aspirasi</div>
+        <div class="value" id="stat-total">—</div>
+      </div>
+      <div class="stat-card sage">
+        <div class="label">Selesai</div>
+        <div class="value" id="stat-selesai">—</div>
+      </div>
+      <div class="stat-card navy">
+        <div class="label">Dalam Proses</div>
+        <div class="value" id="stat-proses">—</div>
+      </div>
+      <div class="stat-card red">
+        <div class="label">Belum Ditindaklanjuti</div>
+        <div class="value" id="stat-belum">—</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:20px;">
+      <div class="card">
+        <h3 style="margin-bottom:14px;">Aspirasi per Bidang</h3>
+        <div id="bidang-breakdown">Memuat data...</div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom:14px;">Top Isu Minggu Ini</h3>
+        <div id="isu-list">Memuat data...</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <h3>Aspirasi Terbaru</h3>
+        <a href="aspirasi.html" style="font-size:13px;color:var(--navy-700);">Lihat semua →</a>
+      </div>
+      <table id="recent-table">
+        <thead>
+          <tr><th>Judul</th><th>Kabupaten</th><th>Bidang</th><th>Status</th><th>Tanggal</th></tr>
+        </thead>
+        <tbody id="recent-tbody">
+          <tr><td colspan="5" style="color:var(--ink-soft);">Memuat data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<script src="js/supabase-client.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

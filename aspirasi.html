@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Si MAMA — Aspirasi</title>
+<link rel="stylesheet" href="css/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div class="app-shell">
+  <aside class="sidebar contour-bg">
+    <div class="brand"><span class="brand-mark">Si MAMA</span></div>
+    <div class="brand-sub">Papua Pegunungan</div>
+
+    <a class="nav-link" href="dashboard.html">Dashboard</a>
+    <a class="nav-link active" href="aspirasi.html">Aspirasi</a>
+    <a class="nav-link" href="isu.html">Isu Strategis</a>
+    <a class="nav-link" href="kabupaten.html">Data Kabupaten</a>
+    <a class="nav-link" href="policy-brief.html">Policy Brief</a>
+    <a class="nav-link" href="stakeholder.html">Stakeholder</a>
+    <a class="nav-link" href="arsip.html">Arsip Dokumen</a>
+
+    <div class="nav-section-label">Akun</div>
+    <div id="user-badge" style="padding:10px 12px;"></div>
+    <a class="nav-link" href="#" onclick="signOut(); return false;">Keluar</a>
+
+    <div class="sidebar-footer">Regional Intelligence Desk</div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1>Aspirasi Masyarakat</h1>
+        <div class="subtitle">Database aspirasi terstruktur, dari kampung sampai tindak lanjut.</div>
+      </div>
+      <button class="btn btn-primary" id="btn-new" data-role="admin,aspirasi_officer,data_officer">
+        + Tambah Aspirasi
+      </button>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;">
+        <div class="field" style="margin:0;">
+          <label>Kabupaten</label>
+          <select id="filter-kabupaten"><option value="">Semua kabupaten</option></select>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>Bidang</label>
+          <select id="filter-bidang"><option value="">Semua bidang</option></select>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>Status</label>
+          <select id="filter-status"><option value="">Semua status</option></select>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>Cari judul</label>
+          <input type="text" id="filter-search" placeholder="Ketik kata kunci..." />
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Judul</th><th>Kabupaten</th><th>Bidang</th><th>Urgensi</th>
+            <th>Status</th><th>Tanggal</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="aspirasi-tbody">
+          <tr><td colspan="7" style="color:var(--ink-soft);">Memuat data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- ===== Modal Tambah/Edit Aspirasi ===== -->
+<div id="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(22,40,58,0.45);align-items:center;justify-content:center;z-index:50;">
+  <div class="card" style="width:560px;max-height:88vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+      <h3 id="modal-title">Tambah Aspirasi</h3>
+      <button class="btn btn-outline" style="padding:6px 10px;" onclick="closeModal()">✕</button>
+    </div>
+
+    <form id="aspirasi-form">
+      <input type="hidden" id="f-id" />
+
+      <div class="field">
+        <label>Judul Aspirasi</label>
+        <input type="text" id="f-judul" required placeholder="Mis. Pembangunan Puskesmas Distrik X" />
+      </div>
+
+      <div class="field">
+        <label>Deskripsi</label>
+        <textarea id="f-deskripsi" rows="3" placeholder="Uraikan permasalahan secara singkat"></textarea>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Kabupaten</label>
+          <select id="f-kabupaten" required></select>
+        </div>
+        <div class="field">
+          <label>Kampung / Lokasi</label>
+          <input type="text" id="f-kampung" placeholder="Opsional" />
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Bidang</label>
+          <select id="f-bidang" required>
+            <option value="Pendidikan">Pendidikan</option>
+            <option value="Infrastruktur">Infrastruktur</option>
+            <option value="Kesehatan">Kesehatan</option>
+            <option value="Ekonomi">Ekonomi</option>
+            <option value="Pemerintahan">Pemerintahan</option>
+            <option value="Sosial">Sosial</option>
+            <option value="Pertanian">Pertanian</option>
+            <option value="Telekomunikasi">Telekomunikasi</option>
+            <option value="Transportasi">Transportasi</option>
+            <option value="Keamanan">Keamanan</option>
+            <option value="Lainnya">Lainnya</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tingkat Urgensi</label>
+          <select id="f-urgensi">
+            <option value="Sedang">Sedang</option>
+            <option value="Tinggi">Tinggi</option>
+            <option value="Rendah">Rendah</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Instansi Berwenang</label>
+          <input type="text" id="f-instansi" placeholder="Mis. Kementerian Kesehatan" />
+        </div>
+        <div class="field">
+          <label>Senator Penanggung Jawab</label>
+          <input type="text" id="f-senator" placeholder="Nama Senator" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Status Tindak Lanjut</label>
+        <select id="f-status">
+          <option value="RECEIVED">Diterima</option>
+          <option value="VERIFIED">Terverifikasi</option>
+          <option value="SUBMITTED">Diteruskan ke Instansi</option>
+          <option value="IN_PROGRESS">Dalam Proses</option>
+          <option value="WAITING_RESPONSE">Menunggu Instansi</option>
+          <option value="BELUM_DITINDAKLANJUTI">Belum Ditindaklanjuti</option>
+          <option value="COMPLETED">Selesai</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Tanggal Penyampaian</label>
+        <input type="date" id="f-tanggal" required />
+      </div>
+
+      <div class="error-text" id="form-error"></div>
+
+      <div style="display:flex;gap:10px;margin-top:8px;">
+        <button type="submit" class="btn btn-primary" id="form-submit-btn">Simpan Aspirasi</button>
+        <button type="button" class="btn btn-outline" onclick="closeModal()">Batal</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/supabase-client.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/aspirasi.js"></script>
+</body>
+</html>
