@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Si MAMA — Data Kabupaten</title>
+<link rel="stylesheet" href="css/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div class="app-shell">
+  <aside class="sidebar contour-bg">
+    <div class="brand"><span class="brand-mark">Si MAMA</span></div>
+    <div class="brand-sub">Papua Pegunungan</div>
+
+    <a class="nav-link" href="dashboard.html">Dashboard</a>
+    <a class="nav-link" href="aspirasi.html">Aspirasi</a>
+    <a class="nav-link" href="isu.html">Isu Strategis</a>
+    <a class="nav-link active" href="kabupaten.html">Data Kabupaten</a>
+    <a class="nav-link" href="policy-brief.html">Policy Brief</a>
+    <a class="nav-link" href="stakeholder.html">Stakeholder</a>
+    <a class="nav-link" href="arsip.html">Arsip Dokumen</a>
+
+    <div class="nav-section-label">Akun</div>
+    <div id="user-badge" style="padding:10px 12px;"></div>
+    <a class="nav-link" href="#" onclick="signOut(); return false;">Keluar</a>
+
+    <div class="sidebar-footer">Regional Intelligence Desk</div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1>Data Kabupaten</h1>
+        <div class="subtitle">Profil 8 kabupaten Papua Pegunungan — diperbarui berkala setiap 3–6 bulan.</div>
+      </div>
+    </div>
+
+    <div id="kabupaten-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;">
+      <div class="card">Memuat data kabupaten...</div>
+    </div>
+  </main>
+</div>
+
+<!-- ===== Modal Detail / Edit Kabupaten ===== -->
+<div id="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(22,40,58,0.45);align-items:center;justify-content:center;z-index:50;">
+  <div class="card" style="width:640px;max-height:88vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <h3 id="modal-title">Kabupaten</h3>
+      <button class="btn btn-outline" style="padding:6px 10px;" onclick="closeModal()">✕</button>
+    </div>
+    <div class="subtitle" id="modal-updated" style="margin-bottom:16px;font-size:12px;"></div>
+
+    <form id="kabupaten-form">
+      <input type="hidden" id="f-id" />
+
+      <div class="field">
+        <label>Demografi</label>
+        <textarea id="f-demografi" rows="2" placeholder="Jumlah penduduk, sebaran distrik, dll." data-role="admin,data_officer"></textarea>
+      </div>
+      <div class="field">
+        <label>Ekonomi</label>
+        <textarea id="f-ekonomi" rows="2" placeholder="Mata pencaharian utama, potensi ekonomi" data-role="admin,data_officer"></textarea>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Pendidikan</label>
+          <textarea id="f-pendidikan" rows="2" data-role="admin,data_officer"></textarea>
+        </div>
+        <div class="field">
+          <label>Kesehatan</label>
+          <textarea id="f-kesehatan" rows="2" data-role="admin,data_officer"></textarea>
+        </div>
+      </div>
+      <div class="field">
+        <label>Infrastruktur</label>
+        <textarea id="f-infrastruktur" rows="2" placeholder="Jalan, listrik, air bersih, telekomunikasi" data-role="admin,data_officer"></textarea>
+      </div>
+      <div class="field">
+        <label>Potensi Daerah</label>
+        <textarea id="f-potensi" rows="2" data-role="admin,data_officer"></textarea>
+      </div>
+      <div class="field">
+        <label>Permasalahan Utama</label>
+        <textarea id="f-permasalahan" rows="2" data-role="admin,data_officer"></textarea>
+      </div>
+      <div class="field">
+        <label>Program Pemerintah Berjalan</label>
+        <textarea id="f-program" rows="2" data-role="admin,data_officer"></textarea>
+      </div>
+
+      <div class="error-text" id="form-error"></div>
+
+      <div style="display:flex;gap:10px;margin-top:8px;" data-role="admin,data_officer">
+        <button type="submit" class="btn btn-primary" id="form-submit-btn">Simpan Perubahan</button>
+        <button type="button" class="btn btn-outline" onclick="closeModal()">Tutup</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/supabase-client.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/kabupaten.js"></script>
+</body>
+</html>
