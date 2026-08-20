@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Si MAMA — Stakeholder</title>
+<link rel="stylesheet" href="css/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div class="app-shell">
+  <aside class="sidebar contour-bg">
+    <div class="brand"><span class="brand-mark">Si MAMA</span></div>
+    <div class="brand-sub">Papua Pegunungan</div>
+
+    <a class="nav-link" href="dashboard.html">Dashboard</a>
+    <a class="nav-link" href="aspirasi.html">Aspirasi</a>
+    <a class="nav-link" href="isu.html">Isu Strategis</a>
+    <a class="nav-link" href="kabupaten.html">Data Kabupaten</a>
+    <a class="nav-link" href="policy-brief.html">Policy Brief</a>
+    <a class="nav-link active" href="stakeholder.html">Stakeholder</a>
+    <a class="nav-link" href="arsip.html">Arsip Dokumen</a>
+
+    <div class="nav-section-label">Akun</div>
+    <div id="user-badge" style="padding:10px 12px;"></div>
+    <a class="nav-link" href="#" onclick="signOut(); return false;">Keluar</a>
+
+    <div class="sidebar-footer">Regional Intelligence Desk</div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1>Stakeholder</h1>
+        <div class="subtitle">Database tokoh & pihak terkait — pemerintah, legislatif, dan non-pemerintah.</div>
+      </div>
+      <button class="btn btn-primary" id="btn-new" data-role="admin,aspirasi_officer,data_officer">
+        + Tambah Stakeholder
+      </button>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+        <div class="field" style="margin:0;">
+          <label>Kategori</label>
+          <select id="filter-kategori">
+            <option value="">Semua kategori</option>
+            <option value="Pemerintah">Pemerintah</option>
+            <option value="Legislatif">Legislatif</option>
+            <option value="Tokoh Masyarakat">Tokoh Masyarakat</option>
+            <option value="Tokoh Adat">Tokoh Adat</option>
+            <option value="Tokoh Agama">Tokoh Agama</option>
+            <option value="Akademisi">Akademisi</option>
+            <option value="Pengusaha">Pengusaha</option>
+            <option value="Organisasi Masyarakat">Organisasi Masyarakat</option>
+            <option value="Pemuda">Pemuda</option>
+            <option value="Perempuan">Perempuan</option>
+          </select>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>Kabupaten</label>
+          <select id="filter-kabupaten"><option value="">Semua kabupaten</option></select>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>Cari nama</label>
+          <input type="text" id="filter-search" placeholder="Ketik nama..." />
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr><th>Nama</th><th>Kategori</th><th>Jabatan</th><th>Kabupaten</th><th>Kontak</th></tr>
+        </thead>
+        <tbody id="stakeholder-tbody">
+          <tr><td colspan="5" style="color:var(--ink-soft);">Memuat data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- ===== Modal Tambah Stakeholder ===== -->
+<div id="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(22,40,58,0.45);align-items:center;justify-content:center;z-index:50;">
+  <div class="card" style="width:480px;max-height:88vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+      <h3>Tambah Stakeholder</h3>
+      <button class="btn btn-outline" style="padding:6px 10px;" onclick="closeModal()">✕</button>
+    </div>
+
+    <form id="stakeholder-form">
+      <div class="field">
+        <label>Nama</label>
+        <input type="text" id="f-nama" required placeholder="Nama lengkap / gelar" />
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Kategori</label>
+          <select id="f-kategori" required>
+            <option value="Pemerintah">Pemerintah</option>
+            <option value="Legislatif">Legislatif</option>
+            <option value="Tokoh Masyarakat">Tokoh Masyarakat</option>
+            <option value="Tokoh Adat">Tokoh Adat</option>
+            <option value="Tokoh Agama">Tokoh Agama</option>
+            <option value="Akademisi">Akademisi</option>
+            <option value="Pengusaha">Pengusaha</option>
+            <option value="Organisasi Masyarakat">Organisasi Masyarakat</option>
+            <option value="Pemuda">Pemuda</option>
+            <option value="Perempuan">Perempuan</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Jabatan</label>
+          <input type="text" id="f-jabatan" placeholder="Mis. Bupati, Ketua DPRK, Tokoh Adat" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Kabupaten</label>
+        <select id="f-kabupaten">
+          <option value="">Tidak spesifik</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Kontak</label>
+        <input type="text" id="f-kontak" placeholder="No. HP / email (opsional)" />
+      </div>
+
+      <div class="field">
+        <label>Catatan</label>
+        <textarea id="f-catatan" rows="2" placeholder="Catatan relasi, riwayat komunikasi, dll (opsional)"></textarea>
+      </div>
+
+      <p style="font-size:12px;color:var(--ink-soft);margin-top:-6px;margin-bottom:14px;">
+        Simpan hanya data yang relevan untuk tugas kedinasan, sesuai ketentuan perlindungan data.
+      </p>
+
+      <div class="error-text" id="form-error"></div>
+
+      <div style="display:flex;gap:10px;margin-top:8px;">
+        <button type="submit" class="btn btn-primary" id="form-submit-btn">Simpan Stakeholder</button>
+        <button type="button" class="btn btn-outline" onclick="closeModal()">Batal</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/supabase-client.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/stakeholder.js"></script>
+</body>
+</html>
